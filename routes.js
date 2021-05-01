@@ -1,12 +1,12 @@
 const todoController = require("./controllers/todoController");
-const { register, login } = require("./controllers/usersController");
+const { register, login, isVerify } = require("./controllers/usersController");
 const schema = require("./models/schema");
 const validate = require("./middleware/validation");
 const authorization = require("./middleware/authorization");
 
 module.exports = (app) => {
     /* User section */
-    app.get("/is-verify", authorization);
+    app.get("/is-verify", authorization, isVerify);
     app.post("/signup", validate(schema.signUp), register);
     app.post("/login", validate(schema.login), login);
 
