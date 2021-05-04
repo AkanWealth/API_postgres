@@ -3,7 +3,7 @@ require("dotenv").config();
 
 module.exports = async(req, res, next) => {
     try {
-        const Token = req.header("token");
+        const Token = req.headers["authorization"];
         if (!Token) {
             return res.status(403).json("Not Authorize");
         }
@@ -12,7 +12,7 @@ module.exports = async(req, res, next) => {
         req.user = payload.user;
     } catch (error) {
         console.log(error.message);
-        return res.status(403).json("Not Authorize");
+        return res.status(403).json("Unauthorize request");
     }
     next();
 };

@@ -34,7 +34,7 @@ module.exports = {
             res.json({
                 status: "Success",
                 data: newUser.rows[0],
-                accessToken: token,
+                token: token,
             });
         } catch (error) {
             console.log(error.message);
@@ -63,14 +63,16 @@ module.exports = {
             /*  give the token */
             const token = tokenGenerator(user.rows[0].user_id);
             res.json({
-                message: `${email}` + " You welcome",
-                accessToken: token,
+                message: " Welcome " + ` ${email}`,
+                token: token,
+                data: user.rows[0],
             });
         } catch (error) {
             console.log(error.message);
             res.status(500).send("Server Error");
         }
     },
+    /* Is verify */
     async isVerify(req, res) {
         try {
             res.json(true);
@@ -79,13 +81,17 @@ module.exports = {
             res.status(500).send("Server Error");
         }
     },
+    /* Dashboard */
     async dashboard(req, res) {
         try {
             // res.json(req.user);
             const user = await pool.query(
-                "SELECT first_name FROM users WHERE user_id = $1", [req.user]
+                "SELECT first_name, last_name FROM users WHERE user_id = $1", [req.user]
             );
-            res.json(user.rows[0]);
+            res.json({
+                message: "WELCOME",
+                data: user.rows[0],
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send("Server Error");

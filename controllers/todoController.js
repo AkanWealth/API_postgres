@@ -10,6 +10,7 @@ module.exports = {
         } catch (error) {
             // res.status(error.statusCode).json(error);
             console.log(error.message);
+            res.status(500).send("Server Error");
         }
     },
 
@@ -20,11 +21,15 @@ module.exports = {
             const todo = await pool.query("SELECT * FROM todo WHERE todo_id = $1", [
                 id,
             ]);
-            // if(id || !todo) return res.status(400).send({error: "Id does not exist"})
-            res.json(todo.rows[0]);
-            console.log(todo.rows[0]);
+            if (todo.rows.length == 0) {
+                return res.status(401).send({ error: "Id does not exist" });
+            } else {
+                res.json(todo.rows[0]);
+                console.log(todo.rows[0]);
+            }
         } catch (err) {
             console.log(err.message);
+            res.status(500).send("Server Error");
         }
     },
     //Create todo
@@ -38,6 +43,7 @@ module.exports = {
         } catch (error) {
             // res.status(error.statusCode).json(error);
             console.log(error.message);
+            res.status(500).send("Server Error");
         }
         // next();
     },
@@ -53,6 +59,7 @@ module.exports = {
         } catch (error) {
             res.status(error.statusCode).json(error);
             console.log(error.message);
+            res.status(500).send("Server Error");
         }
     },
     //Delete todo
@@ -64,8 +71,8 @@ module.exports = {
             );
             res.json("Todo deleted successfully");
         } catch (error) {
-            res.status(error.statusCode).json(error);
             console.log(error.message);
+            res.status(500).send("Server Error");
         }
     },
 };
