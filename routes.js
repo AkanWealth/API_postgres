@@ -14,7 +14,7 @@ module.exports = (app) => {
     app.get("/is-verify", authorization, isVerify);
     app.post("/signup", validate(schema.signUp), register);
     app.post("/login", validate(schema.login), login);
-    app.get("/dashboard", authorization, dashboard);
+    app.get("/user", authorization, dashboard);
 
     /* Todo section */
     app.get("/todos", todoController.allTodo);
