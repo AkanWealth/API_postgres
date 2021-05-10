@@ -15,7 +15,7 @@ module.exports = {
             ]);
 
             if (user.rows.length !== 0) {
-                return res.status(401).send("Email already exist");
+                return res.status(401).send({ error: "Email already exist" });
             }
 
             /* Hashing password */
@@ -37,8 +37,8 @@ module.exports = {
                 token: token,
             });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send("Server Error");
+            // console.log(error.message);
+            res.status(500).send({ error: "Server Error" });
         }
     },
     /* LOGIN */
@@ -51,25 +51,26 @@ module.exports = {
 
             /* check for user */
             if (user.rows.length === 0) {
-                return res.status(401).json("Incorrect Email or Password");
+                return res.status(401).json({ error: "Incorrect Email or Password" });
             }
             const validPassword = await bcrypt.compare(
                 password,
                 user.rows[0].password
             );
             if (!validPassword) {
-                return res.status(401).json("Incorrect Email or Password");
+                return res.status(401).json({ error: "Incorrect Email or Password" });
             }
             /*  give the token */
             const token = tokenGenerator(user.rows[0].user_id);
             res.json({
+                status: "Success",
                 message: " Welcome " + ` ${email}`,
-                token: token,
                 data: user.rows[0],
+                token: token,
             });
         } catch (error) {
-            console.log(error.message);
-            res.status(500).send("Server Error");
+            // console.log(error.message);
+            res.status(500).send({ error: "Server Error" });
         }
     },
     /* Is verify */
@@ -78,23 +79,23 @@ module.exports = {
             res.json(true);
         } catch (error) {
             console.log(error.message);
-            res.status(500).send("Server Error");
+            res.status(500).send({ error: "Server Error" });
         }
     },
-    /* Dashboard */
-    async dashboard(req, res) {
+    /* get user */
+    async user(req, res) {
         try {
             // res.json(req.user);
             const user = await pool.query(
                 "SELECT first_name, last_name FROM users WHERE user_id = $1", [req.user]
             );
             res.json({
-                message: "WELCOME",
+                status: "Success",
                 data: user.rows[0],
             });
         } catch (error) {
             console.log(error.message);
-            res.status(500).send("Server Error");
+            res.status(500).send({ error: "Server Error" });
         }
     },
 };

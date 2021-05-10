@@ -3,7 +3,7 @@ const {
     register,
     login,
     isVerify,
-    dashboard,
+    user,
 } = require("./controllers/usersController");
 const schema = require("./models/schema");
 const validate = require("./middleware/validation");
@@ -14,7 +14,7 @@ module.exports = (app) => {
     app.get("/is-verify", authorization, isVerify);
     app.post("/signup", validate(schema.signUp), register);
     app.post("/login", validate(schema.login), login);
-    app.get("/user", authorization, dashboard);
+    app.get("/user", authorization, user);
 
     /* Todo section */
     app.get("/todos", todoController.allTodo);
