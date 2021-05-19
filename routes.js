@@ -1,6 +1,7 @@
 const todoController = require("./controllers/todoController");
 const usersController = require("./controllers/usersController");
 const contact = require("./controllers/contact");
+const courseController = require("./controllers/courseController");
 const schema = require("./models/schema");
 const validate = require("./middleware/validation");
 const authorization = require("./middleware/authorization");
@@ -20,5 +21,10 @@ module.exports = (app) => {
     app.delete("/todos/:id", todoController.deleteTodo);
 
     /* Contact section */
-    app.post("/contactUs", contact.contact);
+    app.post("/contactUs", validate(schema.contact), contact.contact);
+
+    /* Course section */
+    app.post("/course", authorization, courseController.insertCourse);
+    app.get("/course", /* authorization, */ courseController.getCourse);
+    app.put("/course/:id", authorization, courseController.updateCourse);
 };
