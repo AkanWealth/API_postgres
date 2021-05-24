@@ -24,7 +24,13 @@ module.exports = (app) => {
     app.post("/contactUs", validate(schema.contact), contact.contact);
 
     /* Course section */
-    app.post("/course", authorization, courseController.insertCourse);
-    app.get("/course", /* authorization, */ courseController.getCourse);
-    app.put("/course/:id", authorization, courseController.updateCourse);
+    app.post(
+        "/course",
+        /* authorization,  */
+        validate(schema.course),
+        courseController.insertCourse
+    );
+    app.get("/courses", /* authorization, */ courseController.AllCourse);
+    app.get("/courses/:id", /* authorization, */ courseController.getCourseId);
+    app.put("/courses/:id", /* authorization, */ courseController.updateCourse);
 };

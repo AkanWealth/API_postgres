@@ -1,6 +1,43 @@
 const { pool } = require("../models/db");
 
 module.exports = {
+    /* Get Course */
+    async AllCourse(req, res) {
+        try {
+            const courses = await pool.query("SELECT * FROM course");
+            // if (courses.rows.length == 0) {
+            //     return res.status(401).send({ error: "No course is available" });
+            // }
+            res.send({
+                message: "Successful",
+                data: courses.rows,
+            });
+            console.log(courses.rows);
+        } catch (error) {
+            res.status(500).send({ error: "Error trying to get course" });
+            console.log(error.message);
+        }
+    },
+    /* Get By Id */
+    async getCourseId(req, res) {
+        const { id } = req.params;
+        try {
+            const course = await pool.query(
+                "SELECT * FROM course WHERE course_id = $1", [id]
+            );
+            if (course.rows.length == 0) {
+                return res.status(401).send({ error: "Course not available" });
+            }
+            res.send({
+                message: "Successful",
+                data: course.rows[0],
+            });
+            console.log(course.rows[0]);
+        } catch (error) {
+            res.status(500).send({ error: "Error trying to get course" });
+            console.log(error.message);
+        }
+    },
     /* Insert Course */
     async insertCourse(req, res) {
         try {
@@ -11,27 +48,7 @@ module.exports = {
             res.json(newCourse.rows[0]);
             console.log(newCourse.rows[0]);
         } catch (error) {
-            res.status(400).send({ error: "Error trying to add course" });
-            console.log(error.message);
-        }
-    },
-    /* Get Course */
-    async getCourse(req, res) {
-        try {
-            const course = await pool.query("SELECT * FROM course");
-            // if (course !== undefined || course !== null) {
-            //     res.status(400).send("No course available");
-            // }
-            if (course.rows.length === 0) {
-                return res.status(401).send({ error: "No course is available" });
-            }
-            res.send({
-                message: "Successful",
-                data: course.rows[0],
-            });
-            console.log(course.rows[0]);
-        } catch (error) {
-            res.status(400).send({ error: "Error trying to get course" });
+            res.status(500).send({ error: "Error trying to add course" });
             console.log(error.message);
         }
     },
@@ -44,7 +61,7 @@ module.exports = {
             );
             res.json("Your update was Successful");
         } catch (error) {
-            res.status(400).send({ error: "Error trying to update course" });
+            res.status(500).send({ error: "Error trying to update course" });
             console.log(error.message);
         }
     },
