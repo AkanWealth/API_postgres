@@ -3,9 +3,9 @@ const { pool } = require("../models/db");
 module.exports = {
     async contact(req, res) {
         try {
-            let { fullname, email, message } = req.body;
+            let { contact_name, contact_email, contact_message } = req.body;
             const contact = await pool.query(
-                "INSERT INTO contact (fullname,email,message) VALUES ($1,$2,$3) RETURNING *", [fullname, email, message]
+                "INSERT INTO contact (contact_name,contact_email,contact_message) VALUES ($1,$2,$3) RETURNING *", [contact_name, contact_email, contact_message]
             );
             // if (contact == null) {
             //     res.status(400).send({ error: "An error has occurred" });

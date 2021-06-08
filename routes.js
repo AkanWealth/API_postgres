@@ -33,4 +33,9 @@ module.exports = (app) => {
     app.get("/courses", /* authorization, */ courseController.AllCourse);
     app.get("/courses/:id", /* authorization, */ courseController.getCourseId);
     app.put("/courses/:id", /* authorization, */ courseController.updateCourse);
+    app.delete(
+        "/courses/:id",
+        /* authorization, */
+        courseController.deleteCourse
+    );
 };

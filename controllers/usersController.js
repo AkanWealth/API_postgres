@@ -36,8 +36,12 @@ module.exports = {
                 data: newUser.rows[0],
                 token: token,
             });
+            console.log({
+                data: newUser.rows[0],
+                token: token,
+            });
         } catch (error) {
-            // console.log(error.message);
+            console.log(error.message);
             res.status(500).send({ error: "Server Error" });
         }
     },
